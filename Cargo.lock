@@ -1,0 +1,4 @@
+[root]
+name = "mediawiki-dump"
+version = "0.1.0"
+
