@@ -2,3 +2,9 @@
 name = "mediawiki-dump"
 version = "0.1.0"
 authors = ["Fenhl <fenhl@fenhl.net>"]
+
+[dependencies]
+tendril = "*"
+
+[dependencies.xml5ever]
+git = "https://github.com/Ygg01/xml5ever.git"
