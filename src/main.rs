@@ -1,7 +1,7 @@
 extern crate xml5ever;
 extern crate tendril;
 
-use std::iter;
+use std::{env, iter};
 use std::fs::{self, File};
 use std::io::prelude::*;
 use std::path::Path;
@@ -11,8 +11,11 @@ use tendril::{ByteTendril, ReadExt};
 use xml5ever::rcdom::{NodeEnum, RcDom};
 
 fn main() {
+    let mut args = env::args();
+    let db_path = args.next().expect("missing XML dump argument");
+    let dump_path = args.next().expect("missing target directory argument");
     let mut input = ByteTendril::new();
-    File::open("/Users/fenhl/Desktop/gefolgewiki-dump-peterpc-current.xml")
+    File::open(db_path)
         .expect("could not open XML dump")
         .read_to_tendril(&mut input)
         .expect("could not read XML dump to tendril");
@@ -20,7 +23,7 @@ fn main() {
     let xml: RcDom = xml5ever::parse_xml(iter::once(input), Default::default());
     let doc = xml.document.borrow();
     let root = doc.children.iter().next().expect("XML document has no root");
-    let dump_dir = Path::new("/Users/fenhl/Desktop/gefolgewiki-dump");
+    let dump_dir = Path::new(&dump_path);
     for elt in &root.borrow().children {
         match elt.borrow().node {
             NodeEnum::Element(ref qual_name, _) => {
